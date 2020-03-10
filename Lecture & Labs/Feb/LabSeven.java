@@ -1,42 +1,104 @@
-import java.io.*;
-import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.BufferedReader;
+import java.io.*;
 
-class StudentLabSeven {
-    // ArrayList<String> studentArray = new ArrayList<String>();
-    String studentArray[] = new String[100];
+class Student {
+  int studentId;
+  int studentDob;
+  String firstName;
+  String lastName;
+  String Address;
+  ArrayList<String> studentsList = new ArrayList<String>();
+  String fileName;
 
-    // methods
-    void addToArray(String str[]) {
-        for (int i = 0; i < studentArray.length; i++) {
-            studentArray[i] = str[i];
-        }
+  Student() {
+
+  }
+  Student(int id, String fName, String lName, int dob, String address) {
+    studentId = id;
+    firstName = fName;
+    lastName = lName;
+    studentDob = dob;
+    Address = address;
+  }
+
+  //get file fileName
+  void getFileName() {
+    Scanner file = new Scanner(System.in);
+    String name = file.next();
+    fileName = name;
+  }
+
+  //read and write to array
+  void readFromFile() {
+    try {
+      BufferedReader readStudentFile = new BufferedReader(new FileReader(fileName));
+      String line = readStudentFile.readLine(); 
+      while (line != null) { 
+        studentsList.add(line); 
+        line = readStudentFile.readLine(); 
+      } 
+      readStudentFile.close();
+    } catch (Exception e) {
+      System.out.println("file name");
     }
-
-    void print() {
-        for (String info : studentArray) {
-            if (info != null) {
-                System.out.println(info);
-            }
-        }
+  }
+  
+  //print all data to the console.
+  void printAll() {
+    for(String info : studentsList) {
+      if(info != null) {
+        System.out.println(info);
+      }
     }
+  }
 
+  //write to array
+  void writeToArray() throws IOException {
+    Scanner userInput = new Scanner(System.in);
+    System.out.println("Enter Student ID: ");
+    studentId = userInput.nextInt();
+    System.out.println("Enter Student First Name: ");
+    firstName = userInput.next();
+    System.out.println("Enter Student Last Name: ");
+    lastName = userInput.next();
+    System.out.println("Enter Student DOB: ");
+    studentDob = userInput.nextInt();
+    System.out.println("Enter Student Address: ");
+    Address = userInput.next();
+    studentsList.add(Student(studentId, firstName, lastName, studentDob, Address));
+  }
+  
+  //write back to file
+  void writeToFile() {
+    FileWriter file = new FileWriter(fileName);
+    BufferedWriter br = new BufferedWriter(file);
+    for(int i = 0; i < studentsList.size(); i++) {
+      file.write(studentsList.get(i));
+    }
+    br.close();
+  }
 }
 
-class LabSix {
-    public static void main(String args[]) throws IOException {
-        java.io.File studentFile = new java.io.File("output.text");
-        Scanner fromFile = new Scanner(studentFile);
-        String tempArray[] = new String[100];
-        StudentLabSix students = new StudentLabSix();
-        int count = 0;
+class Append extends Student {
+  Append() {
+    writeToArray();
+    writeToFile();
+  }
+}
 
-        while (fromFile.hasNext()) {
-            tempArray[count] = fromFile.nextLine();
-            count++;
-        }
-        students.addToArray(tempArray);
-        students.print();
+class Main {
+  public static void main(String args[]) throws IOException {
+    Scanner userInput = new Scanner(System.in);
+    Student student = new Student();
+    System.out.println("Enter file name:");
+    student.getFileName();
+    student.readFromFile();
+    student.printAll();
 
-    }
+
+  }
 }
