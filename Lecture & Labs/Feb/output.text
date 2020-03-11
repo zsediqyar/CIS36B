@@ -1,6 +1,7 @@
-ID      FIRST NAME      LAST NAME       DOB     ADDRESS
-1       zaki            sediqyar        12/12   1605 california street
-2       alex            mahon           11/11   1000 stuart street
-3       michael         moore           10/10   525 ward street
-4       james           cameroon        10/15   872 sacramento street
-5       cristiano       ronaldo         02/05   787 pacific street
+ID,FIRST_NAME,LAST_NAME,DOB,ADDRESS
+1,zaki,sediqyar,january,richmond
+2,alex,mahon,february,pinole
+3,john,alma,march,hercules
+4,chris,gianno,may,london
+5,Michael,Becker,March,NewYork
+6,Scott,Johnson,April,California

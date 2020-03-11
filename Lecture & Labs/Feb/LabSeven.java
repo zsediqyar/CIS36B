@@ -1,104 +1,73 @@
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.BufferedReader;
 import java.io.*;
 
 class Student {
-  int studentId;
-  int studentDob;
-  String firstName;
-  String lastName;
-  String Address;
-  ArrayList<String> studentsList = new ArrayList<String>();
-  String fileName;
+  protected String studentId, firstName, lastName, studentDob, Address;
+  protected ArrayList<String> studentsList = new ArrayList<String>();
 
   Student() {
-
   }
-  Student(int id, String fName, String lName, int dob, String address) {
+
+  public void newStudent(String id, String fname, String lname, String dob, String add) {
     studentId = id;
-    firstName = fName;
-    lastName = lName;
+    firstName = fname;
+    lastName = lname;
     studentDob = dob;
-    Address = address;
+    Address = add;
   }
 
-  //get file fileName
-  void getFileName() {
-    Scanner file = new Scanner(System.in);
-    String name = file.next();
-    fileName = name;
-  }
-
-  //read and write to array
-  void readFromFile() {
-    try {
-      BufferedReader readStudentFile = new BufferedReader(new FileReader(fileName));
-      String line = readStudentFile.readLine(); 
-      while (line != null) { 
-        studentsList.add(line); 
-        line = readStudentFile.readLine(); 
-      } 
-      readStudentFile.close();
-    } catch (Exception e) {
-      System.out.println("file name");
+  // copy file to arraylist
+  void copyToList() throws FileNotFoundException {
+    Scanner copyToList = new Scanner(new File("output.text"));
+    while (copyToList.hasNextLine()) {
+      studentsList.add(copyToList.nextLine());
     }
   }
-  
-  //print all data to the console.
+
+  // print all data to the console.
   void printAll() {
-    for(String info : studentsList) {
-      if(info != null) {
-        System.out.println(info);
-      }
+    for (int i = 0; i < studentsList.size(); i++) {
+      System.out.println(studentsList.get(i));
     }
-  }
-
-  //write to array
-  void writeToArray() throws IOException {
-    Scanner userInput = new Scanner(System.in);
-    System.out.println("Enter Student ID: ");
-    studentId = userInput.nextInt();
-    System.out.println("Enter Student First Name: ");
-    firstName = userInput.next();
-    System.out.println("Enter Student Last Name: ");
-    lastName = userInput.next();
-    System.out.println("Enter Student DOB: ");
-    studentDob = userInput.nextInt();
-    System.out.println("Enter Student Address: ");
-    Address = userInput.next();
-    studentsList.add(Student(studentId, firstName, lastName, studentDob, Address));
-  }
-  
-  //write back to file
-  void writeToFile() {
-    FileWriter file = new FileWriter(fileName);
-    BufferedWriter br = new BufferedWriter(file);
-    for(int i = 0; i < studentsList.size(); i++) {
-      file.write(studentsList.get(i));
-    }
-    br.close();
   }
 }
 
 class Append extends Student {
-  Append() {
-    writeToArray();
-    writeToFile();
+  Append(String id, String fname, String lname, String dob, String add) throws IOException {
+    newStudent(id, fname, lname, dob, add);
+    studentsList.add("\n" + id + "," + fname + "," + lname + "," + dob + "," + add);
+    FileWriter newS = new FileWriter("output.text", true);
+    Writer out = new BufferedWriter(newS);
+    for (int i = 0; i < studentsList.size(); i++) {
+      if (studentsList.get(i) != null) {
+        out.write(studentsList.get(i).toString());
+      } else {
+        System.out.println("null");
+      }
+    }
+    out.close();
   }
 }
 
-class Main {
+class LabSeven {
   public static void main(String args[]) throws IOException {
     Scanner userInput = new Scanner(System.in);
     Student student = new Student();
-    System.out.println("Enter file name:");
-    student.getFileName();
-    student.readFromFile();
+    student.copyToList();
     student.printAll();
-
-
+    System.out.print("Student ID: \t");
+    String id = userInput.next();
+    System.out.print("Student First Name: \t");
+    String fname = userInput.next();
+    System.out.print("Student Last Name: \t");
+    String lname = userInput.next();
+    System.out.print("Student DOB: \t");
+    String dob = userInput.next();
+    System.out.print("Student Address: \t");
+    String add = userInput.next();
+    Append newStudent = new Append(id, fname, lname, dob, add);
+    student.copyToList();
+    student.printAll();
   }
 }
