@@ -1,0 +1,13 @@
+4.25,2,Socks
+3.99,5,Shoes
+1.25,10,Belts
+5.00,1,Hats
+10.00,3,Gloves
+25.99,4,Pants
+0.95,7,Ties
+12.49,8,Shirts
+30.00,9,Jackets
+
+TOTAL NUMBER OF ITEMS: 	49
+TOTAL PRICE / UNIT: 	93.92
+TOTAL FINAL AMOUNT: 	4602.08
