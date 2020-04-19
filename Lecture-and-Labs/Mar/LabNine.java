@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-//student class with the constructor
+/*  student class with the constructor */
 class Students {
     String studentId;
     String firstName;
@@ -12,11 +12,13 @@ class Students {
     Students() {
     }
 
+    /* second constructor for print/sorting first and last name */
     Students(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
+    /* main constructor */
     Students(String studentId, String firstName, String lastName, String dateOfBirth, String address) {
         this.studentId = studentId;
         this.firstName = firstName;
@@ -25,17 +27,23 @@ class Students {
         this.address = address;
     }
 
+    /* COMPARATOR interface */
     class sortByLastName implements Comparator<Students> {
         @Override
+        /* the methods gets to student objects and compares with each other */
         public int compare(Students s1, Students s2) {
             return s1.lastName.compareTo(s2.lastName);
         }
     }
 
+    /* Sub-class implementing all the methods */
     class StudentMethods {
+        /* Arraylist of type STUDENT (Object) */
         ArrayList<Students> studentNames = new ArrayList<Students>();
+        /* Arraylist of type String */
         ArrayList<String> studentsInfo = new ArrayList<String>();
 
+        /* reading/copying file content to the arraylist */
         void readFile() throws IOException {
             try {
                 Scanner read = new Scanner(new File("records.text"));
@@ -47,25 +55,14 @@ class Students {
             }
         }
 
+        /* printing all student information */
         void printAll() {
             for (int i = 0; i < studentsInfo.size(); i++) {
                 System.out.println(studentsInfo.get(i));
             }
         }
 
-        void printUnsortedNames() {
-            String[] studs = new String[studentsInfo.size()];
-            for (int i = 0; i < studentsInfo.size(); i++) {
-                studs[i] = studentsInfo.get(i);
-            }
-            System.out.println("-----------------------------");
-            for (String line : studs) {
-                String[] arr = line.split(" ");
-                System.out.println(arr[1] + "\t" + arr[2]);
-            }
-            System.out.println("-----------------------------");
-        }
-
+        /* sorting the names by student last name */
         void sortNames() {
             String studs[] = new String[studentsInfo.size()];
             for (int i = 0; i < studentsInfo.size(); i++) {
@@ -80,6 +77,7 @@ class Students {
             Collections.sort(studentNames, new sortByLastName());
         }
 
+        /* printing the sorted names */
         void printSortedNames() {
             Iterator itr = studentNames.iterator();
             while (itr.hasNext()) {
@@ -88,6 +86,21 @@ class Students {
             }
         }
 
+        /* printint the first name / last name unsorted */
+        void printUnsortedNames() {
+            String[] studs = new String[studentsInfo.size()];
+            for (int i = 0; i < studentsInfo.size(); i++) {
+                studs[i] = studentsInfo.get(i);
+            }
+            System.out.println("-----------------------------");
+            for (String line : studs) {
+                String[] arr = line.split(" ");
+                System.out.println(arr[1] + "\t" + arr[2]);
+            }
+            System.out.println("-----------------------------");
+        }
+
+        /* printing the student address only */
         void printAddress() {
             String studs[] = new String[studentsInfo.size()];
 
@@ -102,6 +115,7 @@ class Students {
             System.out.println("-----------------------------");
         }
 
+        /* searching student by last name and printing the record */
         void searchAndPrint(String name) {
             String[] studs = new String[studentsInfo.size()];
             for (int i = 0; i < studentsInfo.size(); i++) {
@@ -112,14 +126,13 @@ class Students {
                 String[] arr = line.split(" ");
                 if (Arrays.asList(arr).contains(name)) {
                     System.out.println(arr[0] + " " + arr[1] + " " + arr[2] + " " + arr[3] + " " + arr[4]);
-                } else {
-                    System.out.println("No Such Record");
                 }
             }
             System.out.println("---------------------------------------");
         }
     }
 
+    /* Sub-class of the student class displaying MENU */
     class Menu {
         void showMenu() {
             System.out.println("Enter # to Run Program or Quit");
@@ -133,43 +146,54 @@ class Students {
     }
 }
 
-// main class
+/* MAIN Implementation class */
 class LabNine {
     public static void main(String args[]) throws IOException {
         Scanner sc = new Scanner(System.in);
         String selection;
         int key = 0;
+        /* object instance of the STUDENTS class */
         Students s = new Students();
+        /* object instances of the sub classes of students class */
         Students.StudentMethods sm = s.new StudentMethods();
         Students.Menu menu = s.new Menu();
-        menu.showMenu();
+        /* reading the file and copying it's content to memory */
         sm.readFile();
-        key = sc.nextInt();
+        /* once copied, copying names and sorting them */
+        sm.sortNames();
+        /* displaying the menu until selected to exit */
+        do {
+            menu.showMenu();
+            System.out.print("Enter:\t");
+            key = sc.nextInt();
+            if (key == 1) {
+                System.out.println("Sort it by Lastname?\t(Y,N)");
+                selection = sc.next();
 
-        if (key == 1) {
-            System.out.println("Sort it by Lastname?\t(Y,N)");
-            selection = sc.next();
-            if (selection == "y" || selection == "Y") {
-                sm.sortNames();
-                sm.printSortedNames();
-            } else {
-                sm.printUnsortedNames();
+                switch (selection.toLowerCase()) {
+                    case "y":
+                        sm.printSortedNames();
+                        break;
+                    case "n":
+                        sm.printUnsortedNames();
+                        break;
+                    default:
+                        System.out.println("No Option");
+                        break;
+                }
             }
-        }
-        if (key == 2) {
-            sm.printAddress();
-        }
-        if (key == 3) {
-            sm.printAll();
-        }
-        if (key == 4) {
-            System.out.println("Enter Student Lastname:");
-            System.out.print(":> \t");
-            selection = sc.next();
-            sm.searchAndPrint(selection);
-        }
-        // if (key == 5) {
-
-        // }
+            if (key == 2) {
+                sm.printAddress();
+            }
+            if (key == 3) {
+                sm.printAll();
+            }
+            if (key == 4) {
+                System.out.println("Enter Student Lastname:");
+                System.out.print(":> \t");
+                selection = sc.next();
+                sm.searchAndPrint(selection);
+            }
+        } while (key != 5);
     }
 }
