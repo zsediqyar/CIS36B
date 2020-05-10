@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({
 
 
 app.get('/', (req, res) => {
-    res.send("Hello world from the new app for cis36b");
+    res.render('index');
 });
 
 
