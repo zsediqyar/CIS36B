@@ -1,6 +1,16 @@
 <h2>One site page</h2>
 
-<form action="/result" method="POST">
+<form action="/onesite" method="POST">
     <input type="text" name="site" placeholder="Write the website">
+    <div class="phone">
+        <input type="text" name="phone" placeholder="Enter Phone Number">
+        <input type="number" name="duration" placeholder="Enter hours" maxlength="1">
+        <small>we send an sms every 15 minutes (4/hour)</small>
+    </div>
     <button type="submit">Check</button>
+
 </form>
+
+
+<h2>{{result}}</h2>
+
