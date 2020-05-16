@@ -9,9 +9,9 @@ module.exports = {
             }
         });
     },
-    
-    parseFile: function() {
 
+    parseFile: function() {
+        
     },
 
     deleteFile: function(fs, path, name) {
