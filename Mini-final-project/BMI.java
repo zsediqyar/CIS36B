@@ -20,16 +20,35 @@ class Conversions {
         }
     }
 
-    void convertUsToMetric() {
+    void convertUsToMetric(double w, double h) {
+        String height[] = String.valueOf(h).split("\\.");
+        double ft = Double.parseDouble(height[0]);
+        double inch = Double.parseDouble(height[1]);
 
+        this.metricHeight = (ft * 30.48) + (inch * 2.54);
+        this.metricWeight = w * 0.454;
     }
 
     void calcBMI() {
         bmi = metricWeight / (metricHeight * metricHeight / 100) * 100;
     }
 
-    double getBMI() {
-        return bmi;
+    void getBMI() {
+        if (bmi < 18.5) {
+            System.out.println("UNDER WEIGHT");
+        }
+        if (bmi >= 18.5 && bmi <= 24.9) {
+            System.out.println("NORMAL");
+        }
+        if (bmi >= 25 && bmi <= 29.9) {
+            System.out.println("OVER WEIGHT");
+        }
+        if (bmi >= 30 && bmi <= 39.9) {
+            System.out.println("OBESE");
+        }
+        if (bmi >= 40) {
+            System.out.println("EXTREMELY OBESE");
+        }
     }
 
     void result() {
@@ -45,7 +64,6 @@ class BMI {
 
     public static void main(String args[]) {
         char selection;
-        double height, weight;
         Scanner input = new Scanner(System.in);
         Conversions convert = new Conversions();
 
@@ -64,12 +82,11 @@ class BMI {
             System.out.println("Enter your weight in LBs");
             double w = input.nextDouble();
             convert.setUnits(w, h, 'u');
+            convert.convertUsToMetric(w, h);
         }
         input.close();
-        System.out.println(convert.usHeight);
-        System.out.println(convert.usWeight);
         convert.calcBMI();
-        System.out.println(convert.getBMI());
+        convert.getBMI();
 
     }
 }
