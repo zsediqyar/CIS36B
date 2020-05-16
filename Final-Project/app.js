@@ -2,7 +2,12 @@ const express = require('express');
 const request = require('request');
 const bodyParser = require('body-parser');
 const expHand = require('express-handlebars');
-const func = require('./public/js/functions');
+const msg = require('./models/msgFunction');
+const file = require('./models/fileHandler');
+const fs = require('fs');
+const fileType = require('file-type');
+const path = require('path');
+const upload = require('express-fileupload');
 require('dotenv').config();
 
 
@@ -23,69 +28,75 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+app.use(upload());
+
+
 
 
 app.get('/', (req, res) => {
-    sample();
     res.render('index');
-
 });
 
+/*  GET THE PAGE FOR REQUESTING STATUS OF ONE SITE */
 app.get('/onesite', (req, res) => {
     res.render('onesite');
 });
 
+/*  PROCESS THE FORM FOR ONE SITE AND SEND SMS TO A NUMBER */
+app.post('/onesite', (req, res) => {
+    let siteName = req.body.site;
+    let receiver = req.body.receiver;
+    let receiveUpdate = req.body.update;
+    let responseCode;
+
+    /* UPDATE THE CLASS VARIABLES */
+    msg.siteName = siteName;
+    msg.receiver = receiver;
+
+    request(siteName, function (error, response) {
+        responseCode = response.statusCode;
+        if (error) {
+            res.redirect('/onesite')
+            console.log(`${siteName} has errors ${error}`);
+        } else if (receiveUpdate == 'yes') {
+            msg.status = responseCode;
+            let localTime = new Date().toLocaleString();
+            client.messages.create({
+                to: msg.receiver,
+                from: msg.sender,
+                body: msg.msgFormat()
+            });
+            res.render('onesite', {
+                result: responseCode,
+                name: siteName,
+                msg: `Text sent at: ${localTime}`
+            });
+        } else {
+            res.render('onesite', {
+                result: responseCode,
+                name: siteName,
+            });
+        }
+    })
+
+});
+
+/*  GET THE PAGE FOR PARSING MULTIPLE WEBSITES */
 app.get('/multisite', (req, res) => {
     res.render('multisite');
 });
 
-app.post('/onesite', (req, res) => {
-    let site = req.body.site;
-    request(site, (error, response) => {
-        if (error) {
-            console.log(`Error with the site ${site} \n ${error}`);
-        } else {
-            let status = response.statusCode;
-            res.render('onesite', {
-                result: status
-            });
-        }
 
-        /*  RECURRING FUNCTION CALL */
-        let interval;
-        let count = 0;
 
-        function test() {
-            sendMessage();
-            interval = setInterval(sendMessage, 3000);
-        }
-
-        function sendMessage() {
-            let date = new Date();
-            let h = date.getHours();
-            let m = date.getMinutes();
-            let s = date.getSeconds();
-
-            /*  TWILIO SETUP FOR SENDING MESSAGES */
-            let msgFormat = `The site ${site} is up and running \n @${h}:${m}:${s}`;
-            client.messages.create({
-                to: '+15105864466',
-                from: '+12019756633',
-                body: msgFormat
-            });
-            count++;
-            if (count == 3) {
-                clearInterval(interval);
-            }
-        }
-
-        test();
-    });
+app.post('/multisite', (req, res) => {
+    if (req.files) {
+        let csvfile = req.files.csvfile;
+        let fileName = csvfile.name;
+        let path = './uploads/';
+        file.uploadFile(csvfile, path, fileName);
+        // file.deleteFile(fs, path, fileName);
+    }
 });
-
-
-
-
 
 
 

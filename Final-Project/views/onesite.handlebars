@@ -3,9 +3,9 @@
 <form action="/onesite" method="POST">
     <input type="text" name="site" placeholder="Write the website">
     <div class="phone">
-        <input type="text" name="phone" placeholder="Enter Phone Number">
-        <input type="number" name="duration" placeholder="Enter hours" maxlength="1">
-        <small>we send an sms every 15 minutes (4/hour)</small>
+        <input type="text" name="receiver" id ="receiver" placeholder="Enter Phone Number" disabled>
+        <input type="checkbox" name="update" id ="update" value="yes" onclick="getUpdate(this)">
+        <small>an sms is sent every 15 minutes (4 / hour)</small>
     </div>
     <button type="submit">Check</button>
 
@@ -13,4 +13,8 @@
 
 
 <h2>{{result}}</h2>
+<h2>{{name}}</h2>
+<h2>{{msg}}</h2>
 
+
+<script src="/js/frontendScripts.js"></script>
