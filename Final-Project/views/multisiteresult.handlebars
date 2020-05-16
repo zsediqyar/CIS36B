@@ -1,0 +1,49 @@
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<h2>multi site result</h2>
+
+{{#each sites}}
+<h4>{{this}}</h4>
+<h5></h5>
+{{/each}}
+<h3 id="google"></h3>
+
+
+<script>
+    
+
+    let list = Array.from(document.getElementsByTagName('h4'));
+    let code = Array.from(document.getElementsByTagName('h5'));
+    // console.log(list);
+    
+    /*
+    function check(site) {
+        for(let i = 0; i < site.length; i++) {
+            let temp = site[i].innerText;
+            console.log(temp);
+            fetch(site[i].innerText, {mode: 'cors'})
+            .then(result => {document.getElementsByTagName('h5').innerText = result.status;})
+            .catch(error => console.log(error));
+        }
+    }
+    check(list);
+    */
+    for(let i = 0; i < list.length; i++) {
+        try {
+        fetch(list[i].innerHTML, {mode: 'cors'})
+        .then(result => {
+            if(result.status != 200) {
+                code[i].innerHTML = error;
+            } else {
+                code[i].innerHTML = result.status;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            code[i].innerHTML = error;
+            });
+        } catch(error) {
+            console.log(error);
+        }
+    }
+</script>

@@ -2,15 +2,16 @@
 
 <form action="/multisite" method='POST' enctype="multipart/form-data" onsubmit="return Validate(this);">
     <span>Upload Profile Picture:</span>   
-    <input type="file" name="csvfile" required/> <br> 
+    <input type="file" name="uploadedFile" required/> <br> 
     <input type="submit" value="submit">  
 </form>
 
 
-<h2>The File ({{result}}) has been uploaded</h2>
+<h2>Your file ({{result}}) has been uploaded</h2>
+<h3><a href="/renderfile">Check Results</a></h3>
 
 <script>
-    var _validFileExtensions = [".pdf", ".jpeg", ".bmp", ".gif", ".png"];    
+    var _validFileExtensions = [".pdf", ".jpeg", ".bmp", ".gif", ".csv"];    
 function Validate(oForm) {
     var arrInputs = oForm.getElementsByTagName("input");
     for (var i = 0; i < arrInputs.length; i++) {

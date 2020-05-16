@@ -5,11 +5,8 @@ const expHand = require('express-handlebars');
 const msg = require('./models/msgFunction');
 const file = require('./models/fileHandler');
 const fs = require('fs');
-const fileType = require('file-type');
-const path = require('path');
 const upload = require('express-fileupload');
 require('dotenv').config();
-
 
 
 /* TWILIO KEYS */
@@ -29,7 +26,6 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(upload());
-
 
 
 
@@ -81,22 +77,43 @@ app.post('/onesite', (req, res) => {
 
 });
 
+
+
 /*  GET THE PAGE FOR PARSING MULTIPLE WEBSITES */
 app.get('/multisite', (req, res) => {
     res.render('multisite');
 });
 
-
-
 app.post('/multisite', (req, res) => {
+    let uploadedFile, fileName, path;
+    let data = [];
     if (req.files) {
-        let csvfile = req.files.csvfile;
-        let fileName = csvfile.name;
-        let path = './uploads/';
-        file.uploadFile(csvfile, path, fileName);
-        // file.deleteFile(fs, path, fileName);
+        uploadedFile = req.files.uploadedFile;
+        fileName = uploadedFile.name;
+        path = './uploads/';
+        file.uploadFile(uploadedFile, path, fileName);
+        file.filename = fileName;
+        file.filepath = path;
     }
+
+    console.table(data);
+    res.render('multisite', {
+        result: fileName
+    });
 });
+
+
+app.get('/renderfile', (req, res) => {
+    let data = fs.readFileSync('./uploads/sites.csv').toString().split("\n");
+    file.fileToArray(data, file.sitesArray);
+    let len = file.sitesArray.length;
+
+    res.render('multisiteresult', {
+        sites: file.sitesArray
+    });
+});
+
+
 
 
 
