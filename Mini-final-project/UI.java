@@ -1,59 +1,98 @@
+import javax.sound.sampled.Line;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 class UI {
-    JButton convert;
+    JFrame mainFrame;
+    JPanel titlePanel, inputPanel, resultPanel, buttonPanel;
+    JLabel titleLabel, subTitleLabel, heightLabel, weightLabel, percentLabel, resultLabel;
     JTextField heightField, weightField;
-    JRadioButton us, metric;
-    JLabel heightLabel, weightLabel, titleLabel, resultNumLabel, resultLabel;
-    JFrame frame;
-    JPanel titlePanel, inputPanel, buttonPanel, resultPanel;
+    JButton calculate;
 
     UI() {
-        /* create frame */
-        frame = new JFrame("BMI - Calculate your Body Mass Index");
-        frame.setBounds(600, 300, 700, 400); /* X, Y, width, height */
-        frame.setLayout(new GridLayout(4, 1));
-        frame.setBackground(Color.orange);
+        /* setup the frame */
+        mainFrame = new JFrame("BMI - Calcuate Your Body Mass Index");
+        mainFrame.setBounds(600, 200, 300, 450);
+        mainFrame.setLayout(new GridLayout(4, 0));
 
-        /* create panels */
+        /* panels */
         titlePanel = new JPanel();
-        titlePanel.setBackground(Color.red);
-        inputPanel = new JPanel(new GridLayout(1, 4));
-        inputPanel.setBackground(Color.blue);
-        buttonPanel = new JPanel();
-        buttonPanel.setBackground(Color.yellow);
+        titlePanel.setBorder(new EmptyBorder(10, 10, 0, 10));
+        titlePanel.setLayout(new GridLayout(2, 0));
+        inputPanel = new JPanel(new GridLayout(4, 0));
+        inputPanel.setBorder(new EmptyBorder(0, 20, 0, 20));
         resultPanel = new JPanel();
-        resultPanel.setBackground(Color.orange);
+        resultPanel.setBorder(new EmptyBorder(0, 20, 0, 20));
+        resultPanel.setLayout(new GridLayout(2, 0));
+        buttonPanel = new JPanel();
+        buttonPanel.setBorder(new EmptyBorder(0, 20, 0, 20));
+        buttonPanel.setLayout(new GridBagLayout());
 
-        /* create title and add to panel */
-        JLabel titleLabel = new JLabel("BMI - Body Mass Index");
-        titleLabel.setFont(new Font("Sans Serif", Font.BOLD, 20));
+        /* create title and add to it's panel */
+        titleLabel = new JLabel("BMI - Body Mass Index");
         titleLabel.setForeground(Color.decode("#5C8B3F"));
+        titleLabel.setFont(new Font("Sans Serif", Font.BOLD, 20));
+        titleLabel.setHorizontalAlignment(JLabel.CENTER);
+        subTitleLabel = new JLabel("Use Metric (Kg & CM");
+        subTitleLabel.setHorizontalAlignment(JLabel.CENTER);
+        subTitleLabel.setForeground(Color.gray);
+        subTitleLabel.setVerticalAlignment(JLabel.TOP);
         titlePanel.add(titleLabel);
+        titlePanel.add(subTitleLabel);
 
-        /* create text fields and add to panel */
-        heightLabel = new JLabel("Enter your Height");
-        weightLabel = new JLabel("Enter your Weight");
-        heightField = new JTextField();
-        heightField.setSize(20, 20);
-        weightField = new JTextField();
-        weightField.setSize(20, 20);
+        /* create inputs and add to it's panel */
+        heightLabel = new JLabel("Height");
+        heightLabel.setHorizontalAlignment(JLabel.LEADING);
+        heightLabel.setForeground(Color.DARK_GRAY);
+        weightLabel = new JLabel("Weight");
+        weightLabel.setHorizontalAlignment(JLabel.LEFT);
+        weightLabel.setForeground(Color.DARK_GRAY);
+        heightField = new JTextField(18);
+        weightField = new JTextField(18);
+        heightField.setBorder(new LineBorder(Color.decode("#5c8b3f")));
+        weightField.setBorder(new LineBorder(Color.decode("#5c8b3f")));
         inputPanel.add(heightLabel);
         inputPanel.add(heightField);
         inputPanel.add(weightLabel);
         inputPanel.add(weightField);
-        /* create button and add to panel */
+
+        /* create result labels and add to it's panel */
+        percentLabel = new JLabel("%");
+        resultLabel = new JLabel("Obese");
+        percentLabel.setHorizontalAlignment(JLabel.CENTER);
+        resultLabel.setHorizontalAlignment(JLabel.CENTER);
+        percentLabel.setFont(new Font("Sans Serif", Font.BOLD, 18));
+        resultLabel.setFont(new Font("Sans Serif", Font.BOLD, 18));
+        resultPanel.add(percentLabel);
+        resultPanel.add(resultLabel);
+
+        /* create button and add to it's panel */
+        calculate = new JButton("Calculate");
+        calculate.setVerticalAlignment(JButton.CENTER);
+        calculate.setForeground(Color.decode("#5C8B3F"));
+        calculate.setFocusPainted(false);
+        buttonPanel.add(calculate);
 
         /* add panels to the frame */
-        frame.add(titlePanel);
-        frame.add(inputPanel);
-        frame.add(buttonPanel);
-        frame.add(resultPanel);
+        mainFrame.add(titlePanel);
+        mainFrame.add(inputPanel);
+        mainFrame.add(resultPanel);
+        mainFrame.add(buttonPanel);
 
         /* default frame props */
-        frame.setResizable(false);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setResizable(false);
+        mainFrame.setVisible(true);
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == calculate) {
+            percentLabel.setText("Clicked");
+        }
     }
 }
