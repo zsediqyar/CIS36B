@@ -66,7 +66,6 @@ class BMI {
         char selection;
         Scanner input = new Scanner(System.in);
         Conversions convert = new Conversions();
-        UI ui = new UI();
 
         System.out.println("Choose Your Measurement System: U - (US) \t M - (Metric)");
         selection = input.next().charAt(0);
