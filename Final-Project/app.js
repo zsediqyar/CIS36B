@@ -65,7 +65,7 @@ app.post('/onesite', (req, res) => {
             res.render('onesite', {
                 result: responseCode,
                 name: siteName,
-                msg: `Text sent at: ${localTime}`
+                timestap: `Checked at: ${localTime}`
             });
         } else {
             res.render('onesite', {

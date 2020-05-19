@@ -1,4 +1,37 @@
-<h2>Multi Site Page</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="multisite-title-box">
+                <h1 class="secondary-title multisite-title">check multiple sites</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="multisite-form-box">
+                <form action="/multisite" method="POST" enctype="multipart/form-data" onsubmit="return Validate(this);">
+                    <div class="form-group first-row">
+                        <div class="custom-file mb-3">
+    {{!-- <input type="file" class="custom-file-input" id="validatedCustomFile" required>
+    <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+    <div class="invalid-feedback">Example invalid custom file feedback</div>
+  </div> --}}
+                            <input type="file" class="custom-file-input" name="uploadedFile" id="fileUpload" hidden required/>
+                            <label for="fileUpload" id="fileLabel">Choose a File</label>
+                        <input type="submit" value="Upload" class="btn upload">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 
 <form action="/multisite" method='POST' enctype="multipart/form-data" onsubmit="return Validate(this);">
     <span>Upload Profile Picture:</span>   
