@@ -114,6 +114,10 @@ app.get('/renderfile', (req, res) => {
 });
 
 
+app.post('/deleteFile', (req, res) => {
+    file.deleteFile(file, file.filename, file.filepath);
+    res.redirect('/');
+});
 
 
 
