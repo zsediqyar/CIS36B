@@ -15,12 +15,8 @@
                 <form action="/multisite" method="POST" enctype="multipart/form-data" onsubmit="return Validate(this);">
                     <div class="form-group first-row">
                         <div class="custom-file mb-3">
-    {{!-- <input type="file" class="custom-file-input" id="validatedCustomFile" required>
-    <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
-    <div class="invalid-feedback">Example invalid custom file feedback</div>
-  </div> --}}
                             <input type="file" class="custom-file-input" name="uploadedFile" id="fileUpload" hidden required/>
-                            <label for="fileUpload" id="fileLabel">Choose a File</label>
+                            <label for="fileUpload" id="fileLabel">Choose File &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>* .PDF, .TXT</span></label>
                         <input type="submit" value="Upload" class="btn upload">
                     </div>
                 </form>
@@ -29,22 +25,34 @@
     </div>
 </div>
 
-
-
-
-
-<form action="/multisite" method='POST' enctype="multipart/form-data" onsubmit="return Validate(this);">
-    <span>Upload Profile Picture:</span>   
-    <input type="file" name="uploadedFile" required/> <br> 
-    <input type="submit" value="submit">  
-</form>
-
-
-<h2>Your file ({{result}}) has been uploaded</h2>
-<h3><a href="/renderfile">Check Results</a></h3>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="uploadResultBox" id="fileUploadBox">
+                <span id="fileName">{{result}}</span>
+                <h2 id="fileUploadName">Waiting for file upload</h2>
+                <h3 id="fileUploadError"></h3>
+                <a href="/renderfile" class="btn render" id="renderBtn" disabled>Render Result</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
-    var _validFileExtensions = [".pdf", ".jpeg", ".bmp", ".gif", ".csv"];    
+    function fileUploadName() {
+        let fileupload = document.getElementById("fileUpload");
+        let filelabel = document.getElementById("fileLabel");
+        fileupload.onchange = function() {
+            filelabel.textContent = this.files[0].name;
+        }
+    }
+    fileUploadName();
+
+</script>
+
+
+<script>
+    var _validFileExtensions = [".txt" ".csv"];    
 function Validate(oForm) {
     var arrInputs = oForm.getElementsByTagName("input");
     for (var i = 0; i < arrInputs.length; i++) {

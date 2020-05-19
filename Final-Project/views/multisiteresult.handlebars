@@ -1,48 +1,58 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="multisite-title-box">
+                <h1 class="secondary-title multisite-title">render multiple site results</h1>
+            </div>
+        </div>
+    </div>
+</div>
 
-<h2>multi site result</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="renderSitesBox">
+            {{#each sites}}
+            <h5 class="renderSiteNames">{{this}}</h5><span class="renderSiteCodes"></span><br>
+            {{/each}}
+            </div>
+            <div class="clearBtnWrapper">
+                <a href="#" class="btn clearList">Clear List</a>
+            </div>
+        </div>
+    </div>
+</div>
 
-{{#each sites}}
-<h4>{{this}}</h4>
-<h5></h5>
-{{/each}}
-<h3 id="google"></h3>
 
 
 <script>
     
 
-    let list = Array.from(document.getElementsByTagName('h4'));
-    let code = Array.from(document.getElementsByTagName('h5'));
-    // console.log(list);
+    let sitesArr = Array.from(document.getElementsByTagName('h5'));
+    let codesArr = Array.from(document.getElementsByTagName('span'));  
     
-    /*
-    function check(site) {
-        for(let i = 0; i < site.length; i++) {
-            let temp = site[i].innerText;
-            console.log(temp);
-            fetch(site[i].innerText, {mode: 'cors'})
-            .then(result => {document.getElementsByTagName('h5').innerText = result.status;})
-            .catch(error => console.log(error));
-        }
-    }
-    check(list);
-    */
-    for(let i = 0; i < list.length; i++) {
+    for(let i = 0; i < sitesArr.length; i++) {
         try {
-        fetch(list[i].innerHTML, {mode: 'cors'})
+        fetch(sitesArr[i].innerHTML, {mode: 'cors'})
         .then(result => {
             if(result.status != 200) {
-                code[i].innerHTML = error;
-            } else {
-                code[i].innerHTML = result.status;
+                codesArr[i].innerHTML = "Error";
+                codesArr[i].classList.add("error");
+            } else{
+                // codesArr[i].innerHTML = result.status;
+                codesArr[i].innerHTML = "up and running";
+                codesArr[i].classList.add("success");
             }
         })
         .catch(error => {
-            console.log(error);
-            code[i].innerHTML = error;
+            console.log(`Fetch Error: \t ${error}`);
+            codesArr[i].innerHTML = error;
+            codesArr[i].innerHTML = "Error";
+            codesArr[i].classList.add("error");
             });
         } catch(error) {
             console.log(error);
         }
     }
+    
 </script>

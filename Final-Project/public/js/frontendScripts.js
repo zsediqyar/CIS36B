@@ -29,3 +29,9 @@ function changeText() {
         subResult.style.opacity = 1;
     }
 }
+
+function fileUploadName() {
+    document.getElementById("fileUpload").onchange = function () {
+        document.getElementById("fileLabel").textContent = this.files[0].name;
+    }
+}
