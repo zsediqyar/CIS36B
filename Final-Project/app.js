@@ -2,12 +2,16 @@ const express = require('express');
 const request = require('request');
 const bodyParser = require('body-parser');
 const expHand = require('express-handlebars');
+const fs = require('fs');
+const session = require('express-session');
+const flash = require('req-flash');
 const msg = require('./models/msgFunction');
 const file = require('./models/fileHandler');
-const fs = require('fs');
 const upload = require('express-fileupload');
 require('dotenv').config();
 
+/* global variables for file name and file path */
+let filename, filepath;
 
 /* TWILIO KEYS */
 const accountSid = process.env.accountSid;
@@ -26,7 +30,12 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(upload());
-
+app.use(session({
+    secret: 'djhxcvxfgshajfgjhgsjhfgsakjeauytsdfy',
+    resave: false,
+    saveUninitialized: true
+}));
+app.use(flash());
 
 
 app.get('/', (req, res) => {
@@ -94,6 +103,9 @@ app.post('/multisite', (req, res) => {
         file.uploadFile(uploadedFile, path, fileName);
         file.filename = fileName;
         file.filepath = path;
+        
+        filename = fileName;
+        filepath = path;
     }
 
     console.table(data);
@@ -115,7 +127,7 @@ app.get('/renderfile', (req, res) => {
 
 
 app.post('/deleteFile', (req, res) => {
-    file.deleteFile(file, file.filename, file.filepath);
+    file.deleteFile(fs, filepath, filename);
     res.redirect('/');
 });
 
