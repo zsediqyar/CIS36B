@@ -17,7 +17,7 @@
                 <form action="/multisite" method="POST" enctype="multipart/form-data" onsubmit="return Validate(this);">
                     <div class="form-group first-row">
                         <div class="custom-file mb-3">
-                            <input type="file" class="custom-file-input" name="uploadedFile" id="fileUpload" hidden required/>
+                            <input type="file" class="custom-file-input" name="uploadedFile" id="fileUpload" hidden required onchange="checkExtension();"/>
                             <label for="fileUpload" id="fileLabel">Choose File &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>* .PDF, .TXT</span></label>
                         <input type="submit" value="Upload" class="btn upload">
                     </div>
@@ -32,7 +32,7 @@
         <div class="col-md-12">
             <div class="uploadResultBox" id="fileUploadBox">
                 <span id="fileName">{{result}}</span>
-                <h2 id="fileUploadName">Waiting for file upload</h2>
+                <h2 id="fileUploadName"></h2>
                 <h3 id="fileUploadError"></h3>
                 <a href="/renderfile" class="btn render" id="renderBtn" disabled>Render Result</a>
             </div>
@@ -57,36 +57,4 @@
         }
     }
     fileUploadName();
-
-</script>
-
-
-<script>
-    var _validFileExtensions = [".txt" ".csv"];    
-function Validate(oForm) {
-    var arrInputs = oForm.getElementsByTagName("input");
-    for (var i = 0; i < arrInputs.length; i++) {
-        var oInput = arrInputs[i];
-        if (oInput.type == "file") {
-            var sFileName = oInput.value;
-            if (sFileName.length > 0) {
-                var blnValid = false;
-                for (var j = 0; j < _validFileExtensions.length; j++) {
-                    var sCurExtension = _validFileExtensions[j];
-                    if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
-                        blnValid = true;
-                        break;
-                    }
-                }
-                
-                if (!blnValid) {
-                    alert("Sorry, " + sFileName + " is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
-                    return false;
-                }
-            }
-        }
-    }
-  
-    return true;
-}
 </script>
